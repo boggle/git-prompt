@@ -161,7 +161,7 @@
 
   #### prompt counter for recalling commands numerically
   if [[ $cmd_count = on ]] ; then
-    count_prompt="$WHITE\\! "
+    count_prompt="$white$count_prefix_char$WHITE\\! "
   else
     count_prompt=''
   fi
