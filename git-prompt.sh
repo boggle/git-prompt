@@ -6,7 +6,7 @@
 
         #####  read config file if any.
 
-        unset   dir_color rc_color user_id_color root_id_color init_vcs_color clean_vcs_color
+        unset dir_color rc_color user_id_color root_id_color init_vcs_color clean_vcs_color
         unset modified_vcs_color added_vcs_color addmoded_vcs_color untracked_vcs_color op_vcs_color detached_vcs_color
 
         conf=git-prompt.conf;                   [[ -r $conf ]]  && . $conf
@@ -42,6 +42,10 @@
 	prompt_char=${prompt_char:-'>'}
 	root_prompt_char=${root_prompt_char:-'>'}
   separate_prompt=${separate_prompt:-off}
+
+  if [[ -z $cwd_prefix_char ]] ; then
+		cwd_prefix_char=' '
+  fi
 
   if [[ $separate_prompt = "on" ]] ; then
   	sep_prompt=' '
@@ -320,8 +324,8 @@ set_shell_label() {
                 plain_who_where="${id}$at$host"
 
                 # add trailing " "
-                color_who_where="$color_who_where "
-                plain_who_where="$plain_who_where "
+                color_who_where="$color_who_where$cwd_prefix_char"
+                plain_who_where="$plain_who_where$cwd_prefix_char"
 
                 # if root then make it root_color
                 if [ "$id" == "root" ]  ; then
