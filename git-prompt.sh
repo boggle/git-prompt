@@ -34,9 +34,11 @@
                 rc_color=${rc_color:-red}
                 user_id_color=${user_id_color:-blue}
                 root_id_color=${root_id_color:-magenta}
+                coloring='on'
         else                                            #  only B/W
                 dir_color=${dir_color:-bw_bold}
                 rc_color=${rc_color:-bw_bold}
+                coloring='off'
         fi
         unset cols
 
@@ -688,7 +690,11 @@ prompt_command_function() {
         	datestr=$(date +"$clock_format")
         	tput sc
         	tput cup 0 $(expr $(tput cols) - ${#datestr})
-          echo -n "$datestr"
+					if [[ $coloring = "on" ]] ; then
+          	echo "$(tput sgr0)$(tput setaf 3)$datestr$(tput sgr0)"
+					else
+          	echo "$datestr"
+					fi
         	tput rc
         	unset datestr
 			  fi
