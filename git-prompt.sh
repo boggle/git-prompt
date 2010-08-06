@@ -39,21 +39,12 @@
         fi
         unset cols
 
-  #### prompt counter for recalling commands numerically
-  if [[ $cmd_count = on ]] ; then
-    count_prompt='\! '
-  else
-    count_prompt=''
-  fi
-
 	#### prompt character, for root/non-root
 	prompt_char=${prompt_char:-'>'}
 	root_prompt_char=${root_prompt_char:-'>'}
   separate_prompt=${separate_prompt:-off}
 
-  if [[ -z $cwd_prefix_char ]] ; then
-		cwd_prefix_char=' '
-  fi
+  [[ -z $cwd_prefix_char ]] && cwd_prefix_char=' '
 
   ### u@host and cwd separator char
   if [[ $separate_prompt = "on" ]] ; then
@@ -167,6 +158,14 @@
         fi
 
         export who_where
+
+  #### prompt counter for recalling commands numerically
+  if [[ $cmd_count = on ]] ; then
+    count_prompt="$WHITE\\! "
+  else
+    count_prompt=''
+  fi
+
 
 
 cwd_truncate() {
