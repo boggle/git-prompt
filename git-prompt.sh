@@ -24,6 +24,7 @@
         error_bell=${error_bell:-off}
         cwd_cmd=${cwd_cmd:-\\w}
         count=${cmd_count:-off}
+        clock=${clock:-off}
 
 
         #### dir, rc, root color
@@ -45,13 +46,16 @@
   separate_prompt=${separate_prompt:-off}
 
   [[ -z $cwd_prefix_char ]] && cwd_prefix_char=' '
-
+  
   ### u@host and cwd separator char
   if [[ $separate_prompt = "on" ]] ; then
   	sep_prompt=' '
   else
     sep_prompt=''
   fi
+
+  ### default date format for clock
+  [[ -z $clock_format ]] && clock_format='%H:%M:%S %F'
 
         #### vcs state colors
                  init_vcs_color=${init_vcs_color:-WHITE}        # initial
@@ -679,6 +683,15 @@ prompt_command_function() {
         eval "${cwd_cmd/\\/cwd=\\\\}"
 
         PS1="$colors_reset$rc$count_prompt$head_local$color_who_where$dir_color$cwd$tail_local$dir_color$sep_prompt$prompt_char $colors_reset"
+
+        if [[ $clock = "on" ]] ; then
+        	datestr=$(date +"$clock_format")
+        	tput sc
+        	tput cup 0 $(expr $(tput cols) - ${#datestr})
+          echo -n "$datestr"
+        	tput rc
+        	unset datestr
+			  fi
 
         unset head_local tail_local pwd
 }
