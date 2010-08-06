@@ -23,6 +23,7 @@
         vim_module=${vim_module:-on}
         error_bell=${error_bell:-off}
         cwd_cmd=${cwd_cmd:-\\w}
+        count=${cmd_count:-off}
 
 
         #### dir, rc, root color
@@ -38,6 +39,13 @@
         fi
         unset cols
 
+  #### prompt counter for recalling commands numerically
+  if [[ $cmd_count = on ]] ; then
+    count_prompt='\! '
+  else
+    count_prompt=''
+  fi
+
 	#### prompt character, for root/non-root
 	prompt_char=${prompt_char:-'>'}
 	root_prompt_char=${root_prompt_char:-'>'}
@@ -47,6 +55,7 @@
 		cwd_prefix_char=' '
   fi
 
+  ### u@host and cwd separator char
   if [[ $separate_prompt = "on" ]] ; then
   	sep_prompt=' '
   else
@@ -670,7 +679,7 @@ prompt_command_function() {
         # else eval cwd_cmd,  cwd should have path after exection
         eval "${cwd_cmd/\\/cwd=\\\\}"
 
-        PS1="$colors_reset$rc$head_local$color_who_where$dir_color$cwd$tail_local$dir_color$sep_prompt$prompt_char $colors_reset"
+        PS1="$colors_reset$rc$count_prompt$head_local$color_who_where$dir_color$cwd$tail_local$dir_color$sep_prompt$prompt_char $colors_reset"
 
         unset head_local tail_local pwd
 }
