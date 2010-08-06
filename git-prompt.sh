@@ -41,6 +41,13 @@
 	#### prompt character, for root/non-root
 	prompt_char=${prompt_char:-'>'}
 	root_prompt_char=${root_prompt_char:-'>'}
+  separate_prompt=${separate_prompt:-off}
+
+  if [[ $separate_prompt = "on" ]] ; then
+  	sep_prompt=' '
+  else
+    sep_prompt=''
+  fi
 
         #### vcs state colors
                  init_vcs_color=${init_vcs_color:-WHITE}        # initial
@@ -134,7 +141,7 @@
         #######  specifically exclude emacs, want full when running inside emacs
         if   [[ -z "$TERM"   ||  ("$TERM" = "dumb" && -z "$INSIDE_EMACS")  ||  -n "$MC_SID" ]];   then
                 unset PROMPT_COMMAND
-                PS1="\w$prompt_char "
+                PS1="\w$sep_prompt$prompt_char "
                 return 0
         fi
 
@@ -659,7 +666,7 @@ prompt_command_function() {
         # else eval cwd_cmd,  cwd should have path after exection
         eval "${cwd_cmd/\\/cwd=\\\\}"
 
-        PS1="$colors_reset$rc$head_local$color_who_where$dir_color$cwd$tail_local$dir_color$prompt_char $colors_reset"
+        PS1="$colors_reset$rc$head_local$color_who_where$dir_color$cwd$tail_local$dir_color$sep_prompt$prompt_char $colors_reset"
 
         unset head_local tail_local pwd
 }
